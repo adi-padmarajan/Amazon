@@ -3,6 +3,30 @@ import {products} from '../data/products.js';
 
 let productsHTML = '';
 
+function addToCart(productId){
+   //Check if the product is already in the cart
+    let matchingItem;
+
+    cart.forEach((cartItem) => {
+      if(productId === cartItem.productId){
+        matchingItem = cartItem;
+      }
+    });
+
+    //If the product is already in the cart, increase its quantity by 1, else push to cart.
+    const quantitySelector = document.querySelector(`.js-quantity-selector-${productId}`);
+    const quantity = Number(quantitySelector.value);
+    if(matchingItem){
+      matchingItem.quantity += quantity;
+    }
+    else{
+        cart.push({
+        productId,
+        quantity
+      });
+    }
+}
+
 products.forEach((product) => {
     productsHTML += `
         <div class="product-container">
@@ -59,38 +83,23 @@ products.forEach((product) => {
 
 document.querySelector('.js-products-grid').innerHTML = productsHTML;
 
-document.querySelectorAll('.js-add-to-cart').forEach((button) => {
-  button.addEventListener('click', () => {
-    const {productId} = button.dataset;
-
-    //Check if the product is already in the cart
-    let matchingItem;
-    cart.forEach((item) => {
-      if(productId === item.productId){
-        matchingItem = item;
-      }
-    });
-
-    //If the product is already in the cart, increase its quantity by 1, else push to cart.
-    const quantitySelector = document.querySelector(`.js-quantity-selector-${productId}`);
-    const quantity = Number(quantitySelector.value);
-    if(matchingItem){
-      matchingItem.quantity += quantity;
-    }
-    else{
-        cart.push({
-        productId,
-        quantity
-      });
-    }
-
+function updateCartQuantity(){
     let cartQuantity = 0;
 
-    cart.forEach((item) => {
-      cartQuantity += item.quantity;
+    cart.forEach((cartItem) => {
+      cartQuantity += cartItem.quantity;
     });
 
     document.querySelector('.js-cart-quantity').innerHTML = cartQuantity;
+}
+
+
+document.querySelectorAll('.js-add-to-cart').forEach((button) => {
+  button.addEventListener('click', () => {
+    const {productId} = button.dataset;
+    addToCart(productId);
+    updateCartQuantity();
+
     document.querySelector(`.js-added-to-cart-${productId}`).classList.add('added-to-cart-active');
     setTimeout(() => {
       document.querySelector(`.js-added-to-cart-${productId}`).classList.remove('added-to-cart-active');
