@@ -4,6 +4,17 @@ import {formatCurrency} from './utils/money.js';
 
 let cartSummaryHTML = '';
 
+function updateCartQuantity(){
+  let count = cart.length;
+  if(count === 0){
+    document.querySelector('.js-checkout-header-quantity').innerHTML = '';
+  }
+  else{
+    document.querySelector('.js-checkout-header-quantity').innerHTML = count;
+  }
+}
+updateCartQuantity();
+
 cart.forEach((cartItem) => {
     const productId = cartItem.productId;
     let matchingProduct;
@@ -105,5 +116,7 @@ document.querySelectorAll('.js-delete-link').forEach((link) => {
       
       const container = document.querySelector(`.js-cart-item-container-${productId}`)
       container.remove();
+      updateCartQuantity()
   });
 });
+
