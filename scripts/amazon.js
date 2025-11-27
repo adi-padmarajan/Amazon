@@ -66,7 +66,12 @@ function updateCartQuantity(){
       cartQuantity += cartItem.quantity;
     });
 
-    document.querySelector('.js-cart-quantity').innerHTML = cartQuantity;
+    if(cartQuantity === 0){
+      document.querySelector('.js-cart-quantity').innerHTML = '';
+    }
+    else{
+      document.querySelector('.js-cart-quantity').innerHTML = cartQuantity;
+    }
 }
 
 
