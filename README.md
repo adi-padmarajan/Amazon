@@ -10,4 +10,8 @@ A full-stack Amazon-inspired e-commerce web application built using HTML, CSS, a
 
 <img src = "screenshots/HomePage.png">
 
+### Add Items to Cart
+
+<img src = "screenshots/AddItems.png">
+
 ---
