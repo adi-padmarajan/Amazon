@@ -57,3 +57,7 @@ export function removeFromCart(productId){
 
   saveToStorage();
 }
+
+export function updateQuantity(productId, newQuantity){
+  
+}
