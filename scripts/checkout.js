@@ -5,12 +5,18 @@ import {formatCurrency} from './utils/money.js';
 let cartSummaryHTML = '';
 
 function updateCartQuantity(){
-  let count = cart.length;
-  if(count === 0){
-    document.querySelector('.js-checkout-header-quantity').innerHTML = '';
-  }
-  else{
-    document.querySelector('.js-checkout-header-quantity').innerHTML = count;
+  let count = 0;
+
+  cart.forEach((cartItem) => {
+    count += cartItem.quantity;
+  });
+
+  const element = document.querySelector('.js-checkout-header-quantity');
+
+  if (count === 0) {
+    element.innerHTML = '';
+  } else {
+    element.innerHTML = count;
   }
 }
 updateCartQuantity();
@@ -44,14 +50,16 @@ cart.forEach((cartItem) => {
                 </div>
                 <div class="product-quantity">
                   <span>
-                    Quantity: <span class="quantity-label">${cartItem.quantity}</span>
+                    Quantity: <span class="quantity-label js-quantity-label-${matchingProduct.id}">${cartItem.quantity}</span>
                   </span>
                   <span class="update-quantity-link js-update-link link-primary" data-product-id = "${matchingProduct.id}">
                     Update
                   </span>
 
                   <input class = "quantity-input js-quantity-input-${matchingProduct.id}">
-                  <span class = "save-quantity-link link-primary js-save-link" data-product-id = "${matchingProduct.id}">
+                  <span 
+                    class = "save-quantity-link link-primary js-save-link" 
+                    data-product-id = "${matchingProduct.id}">
                     Save
                   </span>
 
@@ -145,5 +153,11 @@ document.querySelectorAll('.js-save-link').forEach((link) => {
 
     const quantityInput = document.querySelector(`.js-quantity-input-${productId}`);
     const newQuantity = Number(quantityInput.value);
+    updateQuantity(productId, newQuantity);
+
+    const quantityLabel = document.querySelector(`.js-quantity-label-${productId}`);
+    quantityLabel.innerHTML = newQuantity;
+
+    updateCartQuantity();
   });
 });
